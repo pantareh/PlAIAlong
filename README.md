@@ -4,31 +4,39 @@ A hybrid Python + C++ real-time AI music collaboration system that listens to a 
 
 ## Architecture
 
-- **Python Layer**: ML/AI components (MusicTransformer, audio analysis, voice commands, cloud manager)
-- **C++ Layer**: Real-time audio I/O (ASIO), synchronization (DTW), and mixing
+- **ML Layer** (`ml/`): ML/AI components (MusicTransformer, audio analysis, voice commands, cloud manager)
+- **Audio Engine** (`audio_engine/`): Real-time audio I/O (ASIO), synchronization (DTW), and mixing
 
 ## Requirements
 
-### Python
-- Python 3.10+
-- See `python/requirements.txt`
+### ML Layer (Python)
+- **Python 3.10 or 3.11** (recommended)
+  - PyTorch requires Python 3.10+ and has full binary support for 3.10 and 3.11
+  - Python 3.12 and 3.13 may have compatibility issues with PyTorch
+- See `ml/requirements.txt`
 
-### C++
+### Audio Engine (C++)
 - C++17 compatible compiler
 - CMake 3.15+
 - ASIO SDK (for Windows) or PortAudio
 
 ## Building
 
-### Python Setup
+### ML Layer Setup
 ```bash
-cd python
+cd ml
+
+# Verify Python version (should be 3.10 or 3.11)
+python --version
+
+# Work in virtual environment
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### C++ Build
+### Audio Engine Build
 ```bash
-cd cpp
+cd audio_engine
 mkdir build && cd build
 cmake ..
 make  # or ninja on Windows with Visual Studio
@@ -36,7 +44,7 @@ make  # or ninja on Windows with Visual Studio
 
 ## Configuration
 
-Edit `python/config/config.yaml` to configure:
+Edit `ml/config/config.yaml` to configure:
 - Audio device settings
 - Input channel routing (guitar on channel 1, voice on channel 2)
 - Session parameters
@@ -46,7 +54,7 @@ Edit `python/config/config.yaml` to configure:
 
 ```bash
 # Start the application
-python python/src/main.py
+python ml/src/main.py
 ```
 
 ## Testing

@@ -1,10 +1,10 @@
 # PlAIAlong Tests
 
-## Python Tests
+## ML Layer Tests
 
-Run Python tests:
+Run ML layer tests:
 ```bash
-cd tests/python
+cd tests/ml
 python -m pytest test_session_state.py test_input_listener.py
 ```
 
@@ -14,15 +14,15 @@ python test_session_state.py
 python test_input_listener.py
 ```
 
-## C++ Tests
+## Audio Engine Tests
 
-Build and run C++ tests:
+Build and run audio engine tests:
 ```bash
-cd tests/cpp
+cd tests/audio_engine
 mkdir build && cd build
 cmake ..
 make
 ./test_shared_memory
 ```
 
-Note: C++ tests require Google Test framework.
+Note: Audio engine tests require Google Test framework.
