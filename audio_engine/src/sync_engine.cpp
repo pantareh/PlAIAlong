@@ -9,6 +9,7 @@
 
 // Simple audio file reading (WAV format)
 #ifdef _WIN32
+#define NOMINMAX  // Prevent Windows.h from defining min/max macros
 #include <windows.h>
 #else
 #include <unistd.h>
@@ -89,7 +90,7 @@ bool SyncEngine::loadCloudStem(const std::string& path) {
         for (size_t i = 0; i < resampled.size(); i++) {
             double src_index = i / ratio;
             size_t idx0 = static_cast<size_t>(src_index);
-            size_t idx1 = std::min(idx0 + 1, audio.size() - 1);
+            size_t idx1 = std::min(idx0 + 1, static_cast<size_t>(audio.size() - 1));
             double frac = src_index - idx0;
             resampled[i] = audio[idx0] * (1.0 - frac) + audio[idx1] * frac;
         }
@@ -115,7 +116,7 @@ bool SyncEngine::loadCloudStem(const std::string& path) {
     return true;
 }
 
-bool SyncEngine::alignWithDTW(const AudioBuffer& local, const AudioBuffer& cloud, AudioBuffer& aligned) {
+bool SyncEngine::alignWithDTW(const AudioBuffer& /*local*/, const AudioBuffer& /*cloud*/, AudioBuffer& aligned) {
     if (!m_cloudStem || !m_cloudStemReady) {
         return false;
     }
@@ -136,11 +137,11 @@ float SyncEngine::computeDTWDistance(const float* seq1, int len1, const float* s
     // For MVP, this is a placeholder
     
     if (len1 == 0 || len2 == 0) {
-        return std::numeric_limits<float>::max();
+        return 1.0f;//std::numeric_limits<float>::max();
     }
     
     // Create cost matrix
-    std::vector<std::vector<float>> cost(len1 + 1, std::vector<float>(len2 + 1, std::numeric_limits<float>::max()));
+    std::vector<std::vector<float>> cost(len1 + 1, std::vector<float>(len2 + 1, 1.0f)); // std::numeric_limits<float>::max()
     cost[0][0] = 0.0f;
     
     // Fill cost matrix

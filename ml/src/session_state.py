@@ -47,10 +47,10 @@ class SessionStateManager:
                 if os.name == 'nt':  # Windows
                     # On Windows, we'll use a file mapping approach
                     # For now, use a simpler approach with mmap
-                    self.memory = mmap.mmap(-1, size, tagname=shared_memory_name, access=mmap.ACCESS_WRITE)
+                    self.memory = mmap.mmap(-1, size, tagname=self.shared_memory_name, access=mmap.ACCESS_WRITE)
                 else:  # Linux/Mac
                     # Create shared memory object
-                    fd = os.open(f"/dev/shm/{shared_memory_name}", os.O_CREAT | os.O_RDWR, 0o666)
+                    fd = os.open(f"/dev/shm/{self.shared_memory_name}", os.O_CREAT | os.O_RDWR, 0o666)
                     os.ftruncate(fd, size)
                     self.memory = mmap.mmap(fd, size, access=mmap.ACCESS_WRITE)
                     os.close(fd)
@@ -60,9 +60,9 @@ class SessionStateManager:
             else:
                 # Attach to existing shared memory
                 if os.name == 'nt':  # Windows
-                    self.memory = mmap.mmap(-1, size, tagname=shared_memory_name, access=mmap.ACCESS_WRITE)
+                    self.memory = mmap.mmap(-1, size, tagname=self.shared_memory_name, access=mmap.ACCESS_WRITE)
                 else:  # Linux/Mac
-                    fd = os.open(f"/dev/shm/{shared_memory_name}", os.O_RDWR)
+                    fd = os.open(f"/dev/shm/{self.shared_memory_name}", os.O_RDWR)
                     self.memory = mmap.mmap(fd, size, access=mmap.ACCESS_WRITE)
                     os.close(fd)
                 self.is_owner = False
