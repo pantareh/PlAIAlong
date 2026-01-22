@@ -1,0 +1,37 @@
+audio:
+  sample_rate: 44100
+  buffer_size: 512
+  shared_memory_name: "plaialong_shared_memory"
+  input_channels:
+    guitar_channel: 0      # ASIO input channel index (0-based)
+    voice_channel: 1       # ASIO input channel index
+  asio_device: null       # Auto-detect or specify device name
+
+input_processing:
+  guitar:
+    analysis_window_ms: 100    # Analysis window size
+    min_activity_threshold: 0.01  # Minimum level to process
+  voice:
+    activity_threshold: 0.05   # Voice detection threshold
+    command_timeout_ms: 2000   # Max time for command recognition
+    silence_detection: true    # Only process when voice detected
+
+session:
+  default_key: "C major"
+  default_tempo: 120
+  default_loop_length_bars: 8
+
+local_generator:
+  model_path: "models/music_transformer"
+  ipc_pipe_name: "plaialong_midi"
+  instruments: ["bass", "drums", "pad"]
+  generation_length_bars: 8
+
+cloud_manager:
+  mock_generation_time: 12
+  timeout_seconds: 16
+  stem_directory: "temp/cloud_stems"
+
+sync_engine:
+  dtw_alignment_window_ms: 100
+  crossfade_length_ms: 50
