@@ -70,3 +70,15 @@ Thumbs.db
 *.log
 temp/
 *.tmp
+
+# Generated test files
+tests/generated_tracks/
+
+
+#model files
+/models/*
+!/models/README.md
+*.pth
+*.bin
+*.ckpt
+*.onnx

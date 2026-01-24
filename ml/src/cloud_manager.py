@@ -6,6 +6,7 @@ import soundfile as sf
 import time
 import threading
 import os
+import uuid
 from typing import Optional, Dict, Any
 from .session_state import SessionStateManager
 
@@ -93,9 +94,10 @@ class CloudManager:
             if max_val > 0:
                 audio = audio / max_val * 0.8
             
-            # Generate filename
+            # Generate filename with unique ID to avoid collisions
+            unique_id = uuid.uuid4().hex[:8]
             timestamp = int(time.time())
-            filename = f"cloud_stem_{timestamp}.wav"
+            filename = f"cloud_stem_{timestamp}_{unique_id}.wav"
             filepath = os.path.join(self.stem_directory, filename)
             
             # Save as WAV

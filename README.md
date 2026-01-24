@@ -29,6 +29,8 @@ A hybrid Python + C++ real-time AI music collaboration system that listens to a 
 ## Building
 
 ### ML Layer Setup
+For detailed installation instructions, including **CUDA/GPU support for Windows**, see [ml/README.md](ml/README.md).
+
 ```bash
 cd ml
 

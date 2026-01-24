@@ -25,24 +25,38 @@ endif()
 # Make Google Test available
 FetchContent_MakeAvailable(googletest)
 
-# Test executable - include shared_memory source for linking
+# Test executable 1: Shared Memory Tests
 add_executable(test_shared_memory
     test_shared_memory.cpp
     ${CMAKE_SOURCE_DIR}/../src/shared_memory.cpp
 )
 
-# Link against Google Test
 target_link_libraries(test_shared_memory
     PRIVATE
     GTest::gtest
     GTest::gtest_main
 )
 
-# Include directories for test
 target_include_directories(test_shared_memory PRIVATE
+    ${CMAKE_SOURCE_DIR}/../src
+)
+
+# Test executable 2: Audio Generation Tests
+add_executable(test_audio_generation
+    test_audio_generation.cpp
+)
+
+target_link_libraries(test_audio_generation
+    PRIVATE
+    GTest::gtest
+    GTest::gtest_main
+)
+
+target_include_directories(test_audio_generation PRIVATE
     ${CMAKE_SOURCE_DIR}/../src
 )
 
 # Enable testing
 enable_testing()
 add_test(NAME SharedMemoryTests COMMAND test_shared_memory)
+add_test(NAME AudioGenerationTests COMMAND test_audio_generation)

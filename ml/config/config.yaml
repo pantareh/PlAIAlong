@@ -22,7 +22,7 @@ session:
   default_loop_length_bars: 8
 
 local_generator:
-  model_path: "models/music_transformer"
+  model_path: "dels/Orpheus_Music_Transformer_Trained_Model_96332_steps_0.82_loss_0.748_acc.pth"
   ipc_pipe_name: "plaialong_midi"
   instruments: ["bass", "drums", "pad"]
   generation_length_bars: 8

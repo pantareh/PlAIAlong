@@ -1,3 +1,6 @@
+# Production requirements for ML Layer
+
+# Core ML
 numpy>=1.24.0
 librosa>=0.10.0
 soundfile>=0.12.0
@@ -7,4 +10,12 @@ mido>=1.2.10
 pyyaml>=6.0
 openai-whisper>=20230314
 scipy>=1.10.0
+
+# Windows specific
 pywin32>=305; sys_platform == 'win32'
+
+# --- GPU / CUDA Support (Windows) ---
+# To use NVIDIA GPU, do NOT just pip install -r requirements.txt.
+# Instead, follow the instructions in ml/README.md to install the 
+# CUDA-enabled version of torch first, then run:
+# pip install -r requirements.txt
