@@ -22,7 +22,12 @@ session:
   default_loop_length_bars: 8
 
 local_generator:
-  model_path: "dels/Orpheus_Music_Transformer_Trained_Model_96332_steps_0.82_loss_0.748_acc.pth"
+  # NOTE: Orpheus model on Hugging Face is not in AutoModel format - use local checkpoint instead
+  # Option 1: Use local checkpoint file (requires original Orpheus model code):
+  model_path: "models/Orpheus_Music_Transformer_Trained_Model_128497_steps_0.6934_loss_0.7927_acc.pth"
+  # Option 2: Try Hugging Face (will fall back to rule-based if not available):
+  # model_path: "asigalov61/Orpheus-Music-Transformer"
+  # NOTE: Make sure you're using the GENERATION model, not the Classifier model
   ipc_pipe_name: "plaialong_midi"
   instruments: ["bass", "drums", "pad"]
   generation_length_bars: 8

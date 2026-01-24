@@ -88,7 +88,7 @@ class TestTextToTrack(unittest.TestCase):
     
     def test_local_generator_generates_midi_from_text(self):
         """Test that LocalGenerator can generate MIDI from text instruction."""
-        instruction = "happy upbeat track in C major"
+        instruction = "happy samba upbeat track in C major"
         params = parse_text_instruction(instruction)
         
         # Create context from parsed parameters

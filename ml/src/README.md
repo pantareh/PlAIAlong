@@ -2,6 +2,91 @@
 
 This directory contains utility scripts and functions for the PlAIAlong ML layer.
 
+## Track Generator (`generate_track.py`)
+
+A command-line utility to generate MIDI and audio tracks from text prompts.
+
+### Usage
+
+```bash
+python src/generate_track.py "<prompt>" [options]
+```
+
+### Options
+
+- `--midi-only` - Generate only MIDI files (no audio)
+- `--audio-only` - Generate only audio file (no MIDI)
+- `--instrument <name>` - Generate MIDI for specific instrument only: `bass`, `drums`, or `pad`
+- `--output-dir <path>` - Output directory (default: current directory)
+- `--format <ext>` - Audio format: `wav`, `flac`, or `ogg` (default: `wav`)
+- `--config <path>` - Path to config.yaml (default: `ml/config/config.yaml`)
+
+### Examples
+
+#### Generate Both MIDI and Audio
+```bash
+# Generate MIDI files for all instruments and audio stem
+python src/generate_track.py "happy upbeat track in C major"
+
+# Output:
+# - happy_upbeat_track_in_C_major_bass_20240101_120000.mid
+# - happy_upbeat_track_in_C_major_drums_20240101_120000.mid
+# - happy_upbeat_track_in_C_major_pad_20240101_120000.mid
+# - happy_upbeat_track_in_C_major_audio_20240101_120000.wav
+```
+
+#### Generate Only MIDI Files
+```bash
+# Generate MIDI files only
+python src/generate_track.py "sad slow song" --midi-only
+```
+
+#### Generate Only Audio
+```bash
+# Generate audio stem only
+python src/generate_track.py "energetic fast track" --audio-only
+```
+
+#### Generate MIDI for Specific Instrument
+```bash
+# Generate only bass MIDI
+python src/generate_track.py "calm peaceful music" --instrument bass
+```
+
+#### Specify Output Directory
+```bash
+# Save files to custom directory
+python src/generate_track.py "jazz track in E minor" --output-dir ./output
+```
+
+#### Change Audio Format
+```bash
+# Generate audio in FLAC format
+python src/generate_track.py "rock track" --audio-only --format flac
+```
+
+### How It Works
+
+1. **Parses the text prompt** using an LLM to extract:
+   - Key (musical key: C, D, E, etc.)
+   - Mood (happy, sad, energetic, etc.)
+   - Tempo (BPM)
+
+2. **Generates MIDI patterns** using `LocalGenerator`:
+   - Creates MIDI files for each instrument (bass, drums, pad)
+   - Patterns are generated based on the parsed musical parameters
+
+3. **Generates audio stem** using `CloudManager`:
+   - Creates a WAV/FLAC/OGG audio file
+   - Audio is synthesized from the musical context
+
+### Notes
+
+- Generated files include timestamps to prevent overwrites
+- Filenames are sanitized from the prompt text
+- By default, generates MIDI for all instruments and audio stem
+- Requires proper configuration in `ml/config/config.yaml`
+
 ## MIDI File Parser (`parse_midi.py`)
 
 A command-line utility to parse MIDI files into human-readable formats.
