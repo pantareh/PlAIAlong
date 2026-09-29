@@ -1,50 +1,75 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# PlAIAlong Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Local Timing and Sound
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+The player's device owns the musical clock and produces all sound locally.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+- Beat timing, playback scheduling, and audio synthesis MUST run on the device.
+- No audible event MAY wait on a network response; network delay can only change *what* is
+  played at a future bar, never *when* it plays.
+- If the cloud falls behind or disconnects, the device MUST keep playing coherently (repeat,
+  sustain, or fade) rather than stall or drift.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Rationale: phone-to-cloud round trips are tens to hundreds of milliseconds, well above what a
+player tolerates for accompaniment timing.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### II. Compose Ahead, One Bar at a Time, as MIDI
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+The cloud generates the accompaniment ahead of the playhead in one-bar MIDI chunks.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- The unit of generation and delivery is one bar of symbolic (MIDI) data, not rendered audio.
+- The device MUST hold a buffer of at least one upcoming bar before it is needed.
+- Changes by the player are reflected at the next bar boundary the pipeline can meet.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Rationale: MIDI chunks are small and fast to generate and transmit; bar-sized units keep the
+band responsive while keeping the buffer short.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### III. Stateful Session per Jam
+
+Each jam session is served by a dedicated, stateful model instance that keeps the jam's
+musical context in memory for the session's lifetime.
+
+- Generation MUST continue from retained context (e.g., cached model state) rather than
+  re-sending the full history per request.
+- Stateless per-request generation services MUST NOT be used for per-bar generation.
+
+Rationale: stateless APIs re-process context and bill per request, which makes one-bar chunks
+slow and expensive; a session-bound model is billed by time regardless of chunk size.
+
+### IV. Measured Before Adopted
+
+No generation model or hosting option is adopted without measured evidence.
+
+- Every candidate MUST be benchmarked for per-bar generation latency (target: comfortably
+  under one bar at the target tempo) and for cost per jam-hour.
+- Results, setup, and date MUST be recorded in the feature's plan or research notes.
+- Unverified figures MUST be labeled as estimates.
+
+Rationale: latency and cost decide whether the product works at all; assumptions are not
+enough.
+
+## Technical Constraints
+
+- The device-side client targets mobile phones; the MVP runs in a mobile web browser unless
+  measured latency proves a native app is required (see Principle IV).
+- The musician uses headphones so accompaniment does not bleed into the input microphone.
+
+## Development Workflow
+
+- Work follows Spec Kit's spec-driven flow: constitution → specify → plan → tasks → implement.
+- The project owner approves each stage's artifacts before the next stage starts.
+- Plans MUST include a Constitution Check confirming compliance with Principles I–IV, and any
+  deviation MUST be justified in the plan's complexity tracking.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes other project practices. Amendments are made by editing this file
+with the owner's approval, recording the change in the commit message.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+- Versioning follows semantic versioning: MAJOR for removing or redefining a principle, MINOR
+  for adding a principle or materially expanding guidance, PATCH for clarifications.
+- Every plan and code review verifies compliance with the principles above.
+
+**Version**: 1.0.0 | **Ratified**: 2026-09-29 | **Last Amended**: 2026-09-29
