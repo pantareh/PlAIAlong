@@ -13,7 +13,7 @@
 
 ## Requirement Completeness
 
-- [ ] No [NEEDS CLARIFICATION] markers remain
+- [x] No [NEEDS CLARIFICATION] markers remain
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
@@ -31,7 +31,7 @@
 
 ## Notes
 
-- Open: FR-002 (how a jam starts), FR-003 (MVP instruments), FR-011 (who has access).
-  Resolve before `/speckit-plan`.
+- Resolved 2026-09-29: FR-002 (controls, words, or just playing), FR-003 (drums + bass + pad),
+  FR-011 (owner only).
 - FR-001 names "web browser / no installation" and FR-005/FR-006 describe timing and one-bar
   composition; these are product constraints from the constitution, not implementation choices.

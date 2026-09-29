@@ -15,7 +15,7 @@ insufficient."
 
 ### User Story 1 - Jam with a band that keeps time (Priority: P1)
 
-A musician opens a link on their phone, puts on headphones, picks how the jam starts (see FR-002),
+A musician opens a link on their phone, puts on headphones, sets up the jam with controls or a short description (see FR-002),
 and presses Start. After a short count-in, an AI band starts playing and keeps playing in steady
 time, bar after bar, with new material composed as the jam goes on, until the musician presses
 Stop. The musician plays along over it.
@@ -33,7 +33,9 @@ loop the same bar.
    Start, **Then** they hear a count-in followed by the band within 10 seconds.
 2. **Given** a jam is running, **When** 5 minutes pass, **Then** the band has stayed on the beat
    throughout with no audible gaps, stutters, or drift.
-3. **Given** a jam is running, **When** the musician presses Stop, **Then** the band ends at the
+3. **Given** the musician chose to start by just playing, **When** they play a steady groove
+   for up to 4 bars, **Then** the band joins at the next bar in the detected tempo and key.
+4. **Given** a jam is running, **When** the musician presses Stop, **Then** the band ends at the
    end of the current bar and the session is released.
 
 ---
@@ -93,6 +95,8 @@ the beat grid.
   microphone and that chord-following may misbehave.
 - Microphone permission is denied: the jam still works as in User Story 1, and chord-following
   is reported as unavailable.
+- When starting by just playing, the tempo or key cannot be detected within 8 bars: the
+  musician is asked to set them with controls instead.
 - No cloud capacity is available: the musician is told the band is busy and to try again,
   rather than hearing silence.
 
@@ -102,11 +106,13 @@ the beat grid.
 
 - **FR-001**: Musicians MUST be able to start a jam from a phone's web browser by opening a link,
   with no app installation.
-- **FR-002**: Musicians MUST be able to set how the jam starts:
-  [NEEDS CLARIFICATION: choose tempo, key and style from controls, describe it in words (e.g.,
-  "slow blues in A"), or both?]
-- **FR-003**: The band MUST consist of: [NEEDS CLARIFICATION: which instruments are in the MVP
-  band — drums only, drums + bass, or drums + bass + pad?]
+- **FR-002**: Musicians MUST be able to start a jam in any of three ways:
+  - **Controls**: pick tempo, key, and style.
+  - **Words**: describe it (e.g., "slow blues in A"), which sets tempo, key, and style.
+  - **Just playing**: start playing unaccompanied; the band detects tempo and key from the
+    musician's opening bars and joins at the next bar.
+  Controls and words may be combined (words fill in the controls, which the musician can adjust).
+- **FR-003**: The band MUST consist of drums, bass, and a pad (sustained chords).
 - **FR-004**: The band MUST play continuously in steady time from the end of the count-in until
   the musician stops the jam.
 - **FR-005**: The band's timing MUST NOT depend on network responses; network delays may only
@@ -121,8 +127,8 @@ the beat grid.
   (User Story 3).
 - **FR-010**: The system MUST end a jam and release its cloud resources when the musician stops,
   closes the page, or is disconnected for more than 30 seconds.
-- **FR-011**: Access to jams MUST be limited to: [NEEDS CLARIFICATION: who can use the MVP —
-  only the project owner, a list of invited testers, or anyone with the link?]
+- **FR-011**: Access to jams MUST be limited to the project owner (a single private access);
+  anyone else opening the link MUST NOT be able to start a jam.
 - **FR-012**: The system MUST warn the musician when headphones do not appear to be connected.
 
 ### Key Entities
@@ -160,6 +166,6 @@ the beat grid.
 - Target phones for testing are one recent iPhone and one recent Android phone; wider device
   support follows the MVP.
 - Tempo following (the band speeding up or slowing down with the musician) is out of scope for
-  the MVP; the tempo is fixed per jam.
+  the MVP; the tempo is fixed once the jam starts (set, described, or detected).
 - The per-jam cost target (SC-006) is based on estimates from published GPU pricing and must be
   confirmed by measurement during planning.
