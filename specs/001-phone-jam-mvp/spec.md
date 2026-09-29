@@ -163,8 +163,8 @@ the beat grid.
 - Recording, saving, or sharing jams is out of scope for the MVP.
 - Voice commands (present in the existing desktop prototype) are out of scope for the MVP;
   control is by on-screen buttons.
-- Target phones for testing are one recent iPhone and one recent Android phone; wider device
-  support follows the MVP.
+- The MVP targets Android first (one recent Android phone, Chrome, wired or USB-C headphones);
+  iPhone support follows the MVP, as iOS browsers add known microphone and audio restrictions.
 - Tempo following (the band speeding up or slowing down with the musician) is out of scope for
   the MVP; the tempo is fixed once the jam starts (set, described, or detected).
 - The per-jam cost target (SC-006) is based on estimates from published GPU pricing and must be
